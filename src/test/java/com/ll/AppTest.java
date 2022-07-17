@@ -20,10 +20,10 @@ public class AppTest {
     void boardTableTest() {
         BoardTable boardTable = new BoardTable("board");
         Board board = new Board(1, "박다정", "ㅋㅋ 아 배고파");
-        Util.saveFile("board/board/list.json", board.toJson());
+        Util.saveFile("board/board/list.json", board.toJson(), true);
 
         board = new Board(2, "김수진", "ㅋㅋ나도");
-        Util.saveFile("board/board/list.json", board.toJson());
+        Util.saveFile("board/board/list.json", board.toJson(), true);
 
         assertTrue(new File("board/board/list.json").exists());
 

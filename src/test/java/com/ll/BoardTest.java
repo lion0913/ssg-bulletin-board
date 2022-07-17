@@ -20,8 +20,7 @@ public class BoardTest {
         BoardTable boardTable = new BoardTable("board");
         Board board = new Board(3,"테스트", "박다정");
         String body = board.toJson();
-        Util.saveFile("board/board/list.json", body);
-
+        Util.saveFile("board/board/list.json", body, true);
     }
 
     @Test
@@ -29,5 +28,17 @@ public class BoardTest {
         BoardTable boardTable = new BoardTable("board");
         boardTable.findAll();
 
+    }
+
+    @Test
+    void findByIdTest() {
+        BoardTable boardTable = new BoardTable("board");
+        boardTable.findById(2);
+    }
+
+    @Test
+    void modifyTest() {
+        BoardRepository boardRepository = new BoardRepository();
+        boardRepository.modify(2, "박다정");
     }
 }

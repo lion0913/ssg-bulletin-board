@@ -6,10 +6,12 @@ import java.util.List;
 
 public class BoardController {
     private BufferedReader br;
-    private BoardRepository boardRepository;
+
+    private BoardService boardService;
+
     BoardController(BufferedReader br) {
         this.br = br;
-        this.boardRepository = new BoardRepository();
+        this.boardService = new BoardService();
     }
     void write(Request rq) throws IOException {
         System.out.print("작성자명:");
@@ -17,13 +19,14 @@ public class BoardController {
         System.out.print("내용: ");
         String content = br.readLine().trim();
 
-        Board board = boardRepository.write(author, content);
+        Board board = boardService.write(author, content);
         System.out.printf("%d번 게시글이 등록되었습니다.\n", board.id);
     }
 
     void delete(Request rq) {
         int id = rq.getIntParam("id", 0);
-        boolean result = boardRepository.delete(id);
+        boolean result = boardService.delete(id);
+//        boolean result = boardRepository.delete(id);
         if(result) {
             System.out.println("정상적으로 삭제됐습니다.");
         } else {
@@ -32,7 +35,7 @@ public class BoardController {
     }
 
     void list(Request rq) {
-        List<Board> boardList = boardRepository.findAll();
+        List<Board> boardList = boardService.findAll();
         System.out.println("=============목록================");
         for(Board board : boardList) {
             System.out.println("[ "+board.id+" ]");
@@ -44,13 +47,17 @@ public class BoardController {
     }
 
     void modify(Request rq) throws IOException {
-        int id = rq.getIntParam("id", 0);
-        Board board = boardRepository.findById(id);
+        int id = rq.getIntParam("id", -1);
+        if(id == -1) {
+            System.out.printf("수정할 글 번호를 입력하세요 :");
+            id = Integer.parseInt(br.readLine());
+        }
+        Board board = boardService.findById(id);
         System.out.println("수정할 내용을 입력해주세요 :");
         String content = br.readLine().trim();
 
         board.content = content;
-        boardRepository.modify(id, content);
+        boardService.modify(id, content);
         System.out.println("수정완료됐습니다");
 
     }
